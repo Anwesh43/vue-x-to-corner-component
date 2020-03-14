@@ -89,3 +89,7 @@ Vue.component('corner-lines', {
     },
     template : '<div><button @click = "start" :style = "buttonStyle">Start</button><div :style = "lineStyle1"></div><div :style = "lineStyle2"></div></div>'
 })
+
+const vueInstance = new Vue({
+    el : "#app",
+})
