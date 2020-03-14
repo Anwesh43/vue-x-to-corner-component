@@ -1,7 +1,12 @@
 const scGap = 0.02
 const delay = 30
-const w = window.innerWidth
-const h = window.innerHeight
+var w = window.innerWidth
+var h = window.innerHeight
+
+window.onresize = () => {
+    w = window.innerWidth
+    h = window.innerHeight 
+}
 
 class State {
 
@@ -10,11 +15,10 @@ class State {
     update(cb) {
         this.scale += scGap
         this.sf = Math.sin(this.scale * Math.PI)
-        if (Math.abs(this.scale - this.prevScale) > 1) {
+        if (this.scale > 1) {
             this.scale = 0
             this.sf = 0
             cb()
-
         }
     }
 }
@@ -33,6 +37,7 @@ class Animator {
 
     stop() {
         if (this.animated) {
+            console.log("stopping animation")
             this.animated = false
             clearInterval(this.interval)
         }
@@ -61,15 +66,15 @@ Vue.component('corner-lines', {
         getLineStyle(i) {
             const strokeWidth = Math.min(w, h) / 50
             const position = 'absolute'
-            const wDynamic = Math.sqrt(w * w + h  * h) * 0.5 * this.sf
+            const wDynamic = Math.sqrt(w * w + h  * h) * this.sf
             const left = `${w / 2 - wDynamic / 2}px`
             const top = `${h / 2 - strokeWidth / 2}px`
             const width = `${wDynamic}px`
-            const height = `${strokeWidth / 2}px`
+            const height = `${strokeWidth}px`
             const background = '#673AB7'
             const deg = Math.atan(h / w) * 180 / Math.PI
             const WebkitTransform = `rotate(${deg * (1 - 2 * i)}deg)`
-            return {position, left, top, width, height, background}
+            return {position, left, top, width, height, background, WebkitTransform}
         }
     },
 
