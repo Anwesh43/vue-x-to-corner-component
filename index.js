@@ -1,4 +1,5 @@
 const scGap = 0.02
+const delay = 30
 
 class State {
 
@@ -12,6 +13,26 @@ class State {
             this.sf = 0
             cb()
 
+        }
+    }
+}
+
+class Animator {
+
+    animated = false
+    interval
+
+    start(cb) {
+        if (!this.animated) {
+            this.animated = true
+            this.interval = setInterval(cb, delay)
+        }
+    }
+
+    stop() {
+        if (this.animated) {
+            this.animated = false
+            clearInterval(this.interval)
         }
     }
 }
