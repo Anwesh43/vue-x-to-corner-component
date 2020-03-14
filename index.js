@@ -1,12 +1,7 @@
 const scGap = 0.02
 const delay = 30
-var w = window.innerWidth
-var h = window.innerHeight
-
-window.onresize = () => {
-    w = window.innerWidth
-    h = window.innerHeight 
-}
+const w = window.innerWidth
+const h = window.innerHeight
 
 class State {
 
@@ -49,7 +44,7 @@ Vue.component('corner-lines', {
         const state = new State()
         const animator = new Animator()
         const sf = state.sf
-        return {state, animator, sf}
+        return {state, animator, sf, w, h}
     },
 
     methods : {
@@ -64,6 +59,7 @@ Vue.component('corner-lines', {
         },
 
         getLineStyle(i) {
+            const {w, h} = this
             const strokeWidth = Math.min(w, h) / 50
             const position = 'absolute'
             const wDynamic = Math.sqrt(w * w + h  * h) * this.sf
@@ -78,6 +74,14 @@ Vue.component('corner-lines', {
         }
     },
 
+    created() {
+        console.log("component is created")
+        window.onresize = () => {
+            this.w = window.innerWidth
+            this.h = window.innerHeight
+        }
+    },
+
     computed : {
         lineStyle1() {
             return this.getLineStyle(0)
@@ -86,9 +90,10 @@ Vue.component('corner-lines', {
             return this.getLineStyle(1)
         },
         buttonStyle() {
+            const {w, h} = this
             const position = 'absolute'
             const left = `${0.5 * w}px`
-            const top = `${0.2 * h}px`
+            const top = `${0.1 * h}px`
             return {position, top, left}
         }
     },
